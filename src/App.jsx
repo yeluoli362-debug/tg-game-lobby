@@ -12,24 +12,26 @@ function App() {
   ]);
 
   useEffect(() => {
-    // Initialize Telegram Web App
-    WebApp.ready();
-    WebApp.expand();
-    
-    if (WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
-      setUser(WebApp.initDataUnsafe.user);
+    if (typeof window !== 'undefined' && window.Telegram && window.Telegram.WebApp) {
+      try {
+        WebApp.ready();
+        WebApp.expand();
+        if (WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
+          setUser(WebApp.initDataUnsafe.user);
+        }
+        if (WebApp.colorScheme === 'dark') {
+          document.body.classList.add('tg-dark');
+        }
+      } catch (e) {
+        console.warn("WebApp init failed", e);
+      }
     } else {
-      // Mock user for local development
+      // Mock user for local development / browser
       setUser({
-        first_name: 'Developer',
-        username: 'dev_user',
+        first_name: 'Browser Player',
+        username: 'web_user',
         id: 123456
       });
-    }
-
-    // Set Theme
-    if (WebApp.colorScheme === 'dark') {
-      document.body.classList.add('tg-dark');
     }
   }, []);
 
