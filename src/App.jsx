@@ -7,6 +7,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [games, setGames] = useState([
     { id: 'gomoku', name: '五子棋', icon: '♟️', players: '2', type: '实时联机', tag: 'HOT' },
+    { id: 'pgsimulator', name: 'PG模拟器', icon: '🎰', players: '1', type: '单机休闲', tag: 'NEW' },
     { id: 'tictactoe', name: '井字棋', icon: '❌', players: '2', type: '好友对战', tag: 'NEW' },
     { id: '2048', name: '2048', icon: '🧩', players: '1', type: '单机休闲' },
   ]);
@@ -36,8 +37,15 @@ function App() {
   }, []);
 
   const handleGameClick = (game) => {
-    WebApp.showAlert(`即将进入游戏: ${game.name}！\n(游戏模块开发中...)`);
-    // Here we will route to the specific game component or redirect to game URL
+    if (game.id === 'pgsimulator') {
+      // For PG Simulator, user wants to use this specific URL. 
+      // We can redirect the window directly within the Telegram webview.
+      window.location.href = "https://pglaohuji.com/";
+    } else if (game.id === 'gomoku') {
+      window.location.href = "/games/gomoku/index.html";
+    } else {
+      WebApp.showAlert(`即将进入游戏: ${game.name}！\n(游戏模块开发中...)`);
+    }
   };
 
   return (
